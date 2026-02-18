@@ -1,0 +1,16 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/1/And.hdl
+/**
+ * 1-bit register
+ * I have no clue why but my bit got overwritten by And
+ */
+CHIP Bit {
+    IN in, load;
+    OUT out;
+    
+    PARTS:
+    Mux(a=outback, b=in, sel=load, out=toDFF);
+    DFF(in=toDFF, out=out, out=outback);
+}

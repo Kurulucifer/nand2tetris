@@ -1,0 +1,43 @@
+// This file is part of www.nand2tetris.org
+// and the book "The Elements of Computing Systems"
+// by Nisan and Schocken, MIT Press.
+// File name: projects/3/a/RAM64.hdl
+/**
+ * Memory of sixty four 16-bit registers.
+ * If load is asserted, the value of the register selected by
+ * address is set to in; Otherwise, the value does not change.
+ * The value of the selected register is emitted by out.
+ */
+CHIP RAM64 {
+    IN in[16], load, address[6];
+    OUT out[16];
+
+    PARTS:
+
+    // probably should split the address into two
+    // sets of three bits for the selection
+
+    // Upper level selects the RAM8
+    DMux8Way(in=load, sel=address[3..5], 
+             a=ramA, b=ramB, c=ramC, d=ramD, 
+             e=ramE, f=ramF, g=ramG, h=ramH);
+
+    // Lower level selects the register
+    RAM8(in=in, load=ramA, address=address[0..2], out=ramAo);
+    RAM8(in=in, load=ramB, address=address[0..2], out=ramBo);
+    RAM8(in=in, load=ramC, address=address[0..2], out=ramCo);
+    RAM8(in=in, load=ramD, address=address[0..2], out=ramDo);
+    RAM8(in=in, load=ramE, address=address[0..2], out=ramEo);
+    RAM8(in=in, load=ramF, address=address[0..2], out=ramFo);
+    RAM8(in=in, load=ramG, address=address[0..2], out=ramGo);
+    RAM8(in=in, load=ramH, address=address[0..2], out=ramHo);
+
+    // Read
+    // The lower level is already taken care of for us
+    // (I think)
+    Mux8Way16(a=ramAo, b=ramBo, c=ramCo, d=ramDo, 
+              e=ramEo, f=ramFo, g=ramGo, h=ramHo, sel=address[3..5], out=out);
+
+    // IT WORKED FIRST TRY YESSSS
+
+}
